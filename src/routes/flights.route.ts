@@ -1,5 +1,5 @@
 import {Elysia, t} from "elysia";
-import { findAll, add, findById, removeById } from "../handler/flights.handler";
+import { findAll, add, findById, removeById } from "../handlers/flights.handler";
 
 
 export const flightsRoutes = (app: Elysia) => (

@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,26 +8,33 @@ datasource db {
 }
 
 model Flight {
-  id          Int      @id @default(autoincrement())
-  origin      String
-  destination String
-  departure   DateTime
-  airline     String
-  price       Float
-
+  id           Int           @id @default(autoincrement())
+  origin       String
+  destination  String
+  departure    DateTime
+  airline      String
+  price        Float
   reservations Reservation[]
 
   @@map("flights")
 }
 
-model Passenger {
-  id    Int    @id @default(autoincrement())
-  name  String
-  email String
+enum UserRole {
+  PASSENGER
+  ADMIN
 
+  @@map("user_role")
+}
+
+model User {
+  id           Int           @id @default(autoincrement())
+  name         String
+  password     String
+  email        String        @unique
+  role         UserRole
   reservations Reservation[]
 
-  @@map("passengers")
+  @@map("users")
 }
 
 model Reservation {
@@ -39,9 +43,8 @@ model Reservation {
   passengerId     Int
   seatNumber      Int
   reservationDate DateTime
-
-  flight    Flight    @relation(fields: [flightId], references: [id])
-  passenger Passenger @relation(fields: [passengerId], references: [id])
+  flight          Flight   @relation(fields: [flightId], references: [id])
+  passenger       User     @relation(fields: [passengerId], references: [id])
 
   @@map("reservations")
 }

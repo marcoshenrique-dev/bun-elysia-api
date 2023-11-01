@@ -1,21 +1,28 @@
 import prisma from "../database/prisma";
-import { AddPassengerDTO } from "../dtos/passengers";
+import { AddUserDTO } from "../dtos/users";
 
 class PassengersRepository {
   async findAll() {
-    return await prisma.passenger.findMany({
+    return await prisma.user.findMany({
       include: {
         reservations: true,
       }
     });
   }
-  async add(data: AddPassengerDTO) {
-    return await prisma.passenger.create({
+  async findByEmail(email: string) {
+    return await prisma.user.findUnique({
+     where: {
+      email
+     }
+    });
+  }
+  async add(data: AddUserDTO) {
+    return await prisma.user.create({
      data
     });
   }
   async findById(id: number) {
-    return await prisma.passenger.findUnique({
+    return await prisma.user.findUnique({
       where: {
         id,
       },
@@ -26,7 +33,7 @@ class PassengersRepository {
   }
 
   async removeById(id: number) {
-    return await prisma.passenger.delete({
+    return await prisma.user.delete({
       where: {
         id,
       }
